@@ -1,0 +1,87 @@
+definitions:
+  logic.User:
+    properties:
+      captcha_id:
+        type: string
+      captcha_value:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  tools.ECode:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+info:
+  contact:
+    email: 香香编程喵喵喵
+    name: Vote  Api
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/license/LICENSE-2.0.html
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 执行用户登录
+      parameters:
+      - description: login User
+        in: body
+        name: name
+        required: true
+        schema:
+          $ref: '#/definitions/logic.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tools.ECode'
+      summary: 执行用户登录
+      tags:
+      - login
+  /logout:
+    get:
+      consumes:
+      - application/json
+      description: 执行用户退出
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tools.ECode'
+      summary: 执行用户退出
+      tags:
+      - login
+  /vote:
+    get:
+      consumes:
+      - application/json
+      description: 获取投票信息
+      parameters:
+      - description: vote ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tools.ECode'
+      summary: 获取投票信息
+      tags:
+      - vote
+swagger: "2.0"

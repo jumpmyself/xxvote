@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>香香编程-投票项目</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<main>
+    <div id="vote_table">
+
+    </div>
+<!--{{range $key,$value := .vote}}-->
+<!--<h2><a href="/vote?id={{$value.ID }}">{{$value.Title}}</a></h2>-->
+<!--{{end}}-->
+    <h1>
+        投票详情
+    </h1>
+    <div id="vote_info">
+
+    </div>
+</main>
+<script>
+    $(document).ready(function (){
+        loadData()
+        //当点击<a>标签时触发ajax请求
+        $(`body`).on(`click`,`.ajax-trigger`,function (event) {
+            event.preventDefault();
+            $("#vote_info").empty();
+            $.ajax({
+                url:"/vote",
+                   type:"GET",
+                data:{
+                    id:$(this).attr("data"),
+                },
+                dataType: "json",
+                success:function (data) {
+                    var vote = data.data.Vote
+                    var h1 = $("<div></div>")
+                    h1.append(`<h2>title:` +vote.title+ `</h2>`)
+                    h1.append(`<h2>ID:` +vote.id+`</h2>`)
+                    h1.append(`<h2>Type:` +vote.type+ `</h2>`)
+                    h1.append(`<h2>Status:` +vote.status+ `</h2>`)
+                    $(" #vote_info").append(h1)
+
+
+                    var form = $("<form method=\"post\" action=\"/do_vote\"></form>")
+                    form.append(`<input type="hidden" name="vote_id" value="`+vote.id+`">`)
+
+                    for (const v of data.data.Opt) {
+                        form.append(`<input type="checkbox" name= "opt[]" id="customCheck`+v.id+`" value="`+v.id+`">`);
+                        form.append(`<label for="customCheck`+v.id+`">`+v.name+`</label>`);
+
+                    }
+
+                    form.append(`<button type="submit">Submit</button>`)
+                    $("#vote_info").append(form)
+
+
+                },
+                error:function (data) {
+                    alert(data.message)
+
+                    }
+            });
+        });
+    });
+    function loadData(){
+        $.ajax({
+            //请求资源路径
+            url:"/votes",
+            //请求参数
+            data:{
+            },
+            //请求方式
+            type:"get",
+            //数据形式
+            dataType:"json",
+            //请求成功后调用的回调参数
+            success:function (data){
+                console.log(data)
+
+               for(const datum of data.data) {
+                   $("#vote_table").append(`<a href="#" class="ajax-trigger" data="`+datum.id+`" >`+datum.title+`</a></h2><br>`);
+                }
+            },
+            //请求失败后调用的回调参数
+            error:function (){
+                alert("数据加载失败!!!")
+            }
+        });
+
+
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {
+            "name": "Vote  Api",
+            "email": "香香编程喵喵喵"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/license/LICENSE-2.0.html"
+        }
+    },
+    "paths": {
+        "/login": {
+            "post": {
+                "description": "执行用户登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "login"
+                ],
+                "summary": "执行用户登录",
+                "parameters": [
+                    {
+                        "description": "login User",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/logic.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tools.ECode"
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "get": {
+                "description": "执行用户退出",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "login"
+                ],
+                "summary": "执行用户退出",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tools.ECode"
+                        }
+                    }
+                }
+            }
+        },
+        "/vote": {
+            "get": {
+                "description": "获取投票信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "vote"
+                ],
+                "summary": "获取投票信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "vote ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tools.ECode"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "logic.User": {
+            "type": "object",
+            "properties": {
+                "captcha_id": {
+                    "type": "string"
+                },
+                "captcha_value": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "tools.ECode": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
